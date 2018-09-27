@@ -53,7 +53,7 @@ public class ContainerArrangement extends JFrame {
 	         startxpos = xpos;
 	         startypos = ypos;
       		 s = true;
-        	 Timer timer = new Timer(4, new ActionListener() {
+        	 Timer timer = new Timer(5, new ActionListener() {
         		 int i,j,k = 0;
                  @Override
                  public void actionPerformed(ActionEvent e) {

@@ -2,7 +2,7 @@ package Entity;
 import javax.swing.JComponent;
 
 class ContainerBox extends JComponent {
-    public ContainerBox(int x, int y, String n) {
+    public ContainerBox(int x, int y, int n) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -13,7 +13,7 @@ class ContainerBox extends JComponent {
     private int y;
     public int width = 50;
     public int height = 50;
-    public String n ; 
+    public int n ; 
     public int getX() {
 		return x;
 	}
@@ -27,10 +27,10 @@ class ContainerBox extends JComponent {
 		this.y = y;
 	}
 	
-	public String getN() {
+	public int getN() {
 		return n;
 	}
-	public void setN(String n) {
+	public void setN(int n) {
 		this.n = n;
 	}
 }
