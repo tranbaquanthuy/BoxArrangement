@@ -1,7 +1,7 @@
 package Entity;
 import javax.swing.JComponent;
 
-class ContainerBox extends JComponent {
+public class ContainerBox extends JComponent {
     public ContainerBox(int x, int y, int n) {
 		super();
 		this.x = x;

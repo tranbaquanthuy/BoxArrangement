@@ -25,7 +25,7 @@ public class ContainerArrangement extends JFrame {
    public static final Color BOX_COLOR = Color.BLACK;
    public static final Color CANVAS_BACKGROUND = Color.CYAN;
    private int xpos =50; 
-   private int ypos =50;
+   private int ypos =200;
    private int x2 = 60;
    private int y2 = 60; 
    private int distance= 500;
@@ -34,6 +34,11 @@ public class ContainerArrangement extends JFrame {
    private Task task;
    private JProgressBar progressBar;
    private  JLabel outputTextArea;
+   int  inputdata[][] = {{0,6,15},{5,7,4},{30,21,11}};
+   int count  = inputdata.length*inputdata[inputdata.length-1].length;
+   
+   Rectangle[] r = new Rectangle[count];
+   int l = 0;
    private DrawCanvas canvas; // The custom drawing canvas (an inner class extends JPanel)
    // Constructor to set up the GUI components and event handlers
    public ContainerArrangement() {
@@ -48,8 +53,8 @@ public class ContainerArrangement extends JFrame {
       btnPanel.add(outputTextArea);
       btnStart.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
-        	 task = new Task();                
-	         task.start();
+        	// task = new Task();                
+	       //  task.start();
 	         startxpos = xpos;
 	         startypos = ypos;
       		 s = true;
@@ -57,26 +62,28 @@ public class ContainerArrangement extends JFrame {
         		 int i,j,k = 0;
                  @Override
                  public void actionPerformed(ActionEvent e) {
-                	  if (k < 20 && ypos > startypos - 20) {
-         	        	 k = k + 1;
-         	        	 ypos -= 1;
+                	  if (l < 60 ) {
+         	        	 l = l + 1;
+         	        	 //ypos -= 1;
+         	        	 r[0].setLocation(r[0].x  , r[0].y -1); 
          	             canvas.repaint();
-         	          }
-                	  else if (i < distance && xpos < CANVAS_HEIGHT) {
+         	         }
+                 	  else if (i < distance && xpos < CANVAS_HEIGHT) {
          	        	 i = i + 1;
-         	        	 xpos += 1;
+         	        	// xpos += 1;
+         	        	 r[0].setLocation(r[0].x +1 , r[0].y ); 
          	             canvas.repaint();
          	          }
-         	          else if (j < distance && ypos <CANVAS_WIDTH && i >= distance )
+         	          else if (j < y2*3  && ypos <CANVAS_WIDTH && i >= distance )
         	          {
         	        	 j = j + 1;
-        	        	 ypos += 1;
+        	        	 r[0].setLocation(r[0].x  , r[0].y +1 ); 
         	             canvas.repaint();
         	          }
          	          else
          	          {
          	        	 ((Timer)e.getSource()).stop();
-         	          }
+         	          }  
                  }
         	 });
              timer.start();     
@@ -113,7 +120,7 @@ public class ContainerArrangement extends JFrame {
 	            {
 	            i= ypos;
 	            }
-	            SwingUtilities.invokeLater(new Runnable() {
+	         /*   SwingUtilities.invokeLater(new Runnable() {
 	               public void run() {
 	                  progressBar.setValue(progress);
 	                  outputTextArea.setText(String.format("Completed %d%% of task.\n", progress));
@@ -121,8 +128,8 @@ public class ContainerArrangement extends JFrame {
 	            });
 	            try {
 	               Thread.sleep(100);
-	            } catch (InterruptedException e) {}
-	         }
+	            } catch (InterruptedException e) {} */
+	         } 
 	      }
 	   }   
  
@@ -132,15 +139,43 @@ public class ContainerArrangement extends JFrame {
          super.paintComponent(g);
          setBackground(CANVAS_BACKGROUND);
          g.setColor(BOX_COLOR);
-         if (s==true)
-         {
-         Rectangle r = new Rectangle(xpos, ypos, x2, y2);
-         g.drawRect(xpos, ypos, x2, y2); 
-         drawCenteredString(g,"2",r,g.getFont());
+        if (r[0] == null)
+        {
+    	  createRec();
+    	  s = true;
          }
+    	   int k=0;
+           for (int i = 0; i < inputdata.length; i++) {
+    		int[] row = inputdata[i];
+			for (int j = 0; j < row.length; j++) { 
+				// r[k] = new Rectangle(xpos, ypos, x2, y2);
+		          g.drawRect(r[k].x, r[k].y, x2, y2); 
+		         drawCenteredString(g,String.valueOf(row[j]),r[k],g.getFont());
+		         xpos = xpos +60;
+		         k= k+1;
+			}
+			xpos = 60;
+			ypos = ypos + 60;
+		  }
+           xpos = 60;
+           ypos  = 120;
+      }
+      public  void createRec() {
+      int k=0;
+      for (int i = 0; i < inputdata.length; i++) {
+   		int[] row = inputdata[i];
+   		for (int j = 0; j < row.length; j++) { 
+   			 r[k] = new Rectangle(xpos, ypos, x2, y2);
+   			 xpos = xpos +60;
+   			 k = k+1;
+   		}
+   		xpos = 50;
+		ypos = ypos + 60;
       }
    }
+   }
    
+ 
    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
 	    FontMetrics metrics = g.getFontMetrics(font);
 	    int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
