@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import Entity.ContainerBox;
 @SuppressWarnings("serial")
 public class ContainerArrangement extends JFrame {
    public static final int CANVAS_WIDTH = 900;
@@ -34,14 +36,17 @@ public class ContainerArrangement extends JFrame {
    private Task task;
    private JProgressBar progressBar;
    private  JLabel outputTextArea;
-   int  inputdata[][] = {{0,6,15},{5,7,4},{30,21,11}};
-   int count  = inputdata.length*inputdata[inputdata.length-1].length;
-   
-   Rectangle[] r = new Rectangle[count];
+   int  inputdata[][] ;
+   int count = 0;
+   Rectangle[] r;
    int l = 0;
    private DrawCanvas canvas; // The custom drawing canvas (an inner class extends JPanel)
    // Constructor to set up the GUI components and event handlers
    public ContainerArrangement() {
+	  int rawinputdata[][] =  {{0,6,15},{5,7,4},{30,21,11}};
+	  inputdata = rawinputdata;
+	  count  = inputdata.length*inputdata[inputdata.length-1].length;
+	  r = new Rectangle[count];
       JPanel btnPanel = new JPanel(new FlowLayout());
       JButton btnStart = new JButton("Start");
 	  progressBar = new JProgressBar(0, 100);
@@ -53,8 +58,8 @@ public class ContainerArrangement extends JFrame {
       btnPanel.add(outputTextArea);
       btnStart.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
-        	// task = new Task();                
-	       //  task.start();
+     //   	 task = new Task();                
+	   //     task.start();
 	         startxpos = xpos;
 	         startypos = ypos;
       		 s = true;
@@ -65,19 +70,19 @@ public class ContainerArrangement extends JFrame {
                 	  if (l < 60 ) {
          	        	 l = l + 1;
          	        	 //ypos -= 1;
-         	        	 r[0].setLocation(r[0].x  , r[0].y -1); 
+         	        	 r[2].setLocation(r[2].x  , r[2].y -1); 
          	             canvas.repaint();
          	         }
-                 	  else if (i < distance && xpos < CANVAS_HEIGHT) {
+                 	  else if (i < y2*3 && xpos < CANVAS_HEIGHT) {
          	        	 i = i + 1;
          	        	// xpos += 1;
-         	        	 r[0].setLocation(r[0].x +1 , r[0].y ); 
+         	        	 r[2].setLocation(r[2].x +1 , r[2].y ); 
          	             canvas.repaint();
          	          }
-         	          else if (j < y2*3  && ypos <CANVAS_WIDTH && i >= distance )
+         	          else if (j < y2*3  && ypos <CANVAS_WIDTH && i >= y2*3 )
         	          {
         	        	 j = j + 1;
-        	        	 r[0].setLocation(r[0].x  , r[0].y +1 ); 
+        	        	 r[2].setLocation(r[2].x  , r[2].y +1 ); 
         	             canvas.repaint();
         	          }
          	          else
@@ -120,7 +125,7 @@ public class ContainerArrangement extends JFrame {
 	            {
 	            i= ypos;
 	            }
-	         /*   SwingUtilities.invokeLater(new Runnable() {
+	           SwingUtilities.invokeLater(new Runnable() {
 	               public void run() {
 	                  progressBar.setValue(progress);
 	                  outputTextArea.setText(String.format("Completed %d%% of task.\n", progress));
@@ -128,7 +133,7 @@ public class ContainerArrangement extends JFrame {
 	            });
 	            try {
 	               Thread.sleep(100);
-	            } catch (InterruptedException e) {} */
+	            } catch (InterruptedException e) {} 
 	         } 
 	      }
 	   }   
@@ -159,6 +164,8 @@ public class ContainerArrangement extends JFrame {
 		  }
            xpos = 60;
            ypos  = 120;
+           ContainerBox n1 = new ContainerBox(40,40,40,40,30,40,10);
+           g.drawRect(n1.x, n1.y, 400, 400); 
       }
       public  void createRec() {
       int k=0;
