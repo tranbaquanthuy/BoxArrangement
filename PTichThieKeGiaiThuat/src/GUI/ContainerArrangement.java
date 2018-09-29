@@ -35,7 +35,7 @@ public class ContainerArrangement extends JFrame {
    private int distance= 500;
    private int startxpos,startypos;
    private boolean s= false,sort= false;
-   private Task2 task;
+   private Task task;
    private JProgressBar progressBar;
    private  JLabel outputTextArea;
    int  inputdata[][] ;
@@ -64,37 +64,7 @@ public class ContainerArrangement extends JFrame {
       btnPanel.add(progressBar);
       btnPanel.add(outputTextArea);
      
-      Timer timer = new Timer(10, new ActionListener() {
- 		 @Override
-          public void actionPerformed(ActionEvent e) {
- 			int g =0;
- 			int f = nr.length-1;
- 			for (int i = 0; i < r.length; i++) {
-     			for (int j = 0; j < r.length; j++) {
-     				if ( g  > r.length -1)
-	     			    {
-	     			    	((Timer)e.getSource()).stop();
-	     			    	break;
-	     			    }
-     			    if(r[i][j].getN() == nr[f][g].getN() )
-     			    {	 
-     			       
-     			    	System.out.println(nr[f][g].getN());
-     			    	f = f - 1 ;
-     			        if( f <  0)
-     			        {
-     			        	g++;
-     			        	f = r.length-1;	
-     			        }
-     			        i = 0 ; 
-     			        j = -1 ;
-     			      
-     			    }
-     			  
-     			}
-            } 
- 		 }
- 		 });
+      
       Timer timer2 = new Timer(2, new ActionListener() {
   		 @Override
            public void actionPerformed(ActionEvent e) {
@@ -106,6 +76,8 @@ public class ContainerArrangement extends JFrame {
   		        		 ((Timer)e.getSource()).stop();
   		          }
   		  else {
+  		  if(nr[c][d].getN() != 0 )
+  		  {
   		  if(r[a][b].getN() == nr[c][d].getN())
   		  {
   			  if (l < y2 + (y2 * a) ) {
@@ -137,6 +109,17 @@ public class ContainerArrangement extends JFrame {
 	      	      }
 	          }
   		  }
+  			}
+  			
+  			
+  			else {
+  				  c--;
+	        	  if(c < 0 && d < r.length-1 )
+	      	      {
+	      		  c = r.length-1;
+	      		  d++;
+	      	      }
+  			}
   			}
   			}
   	  }
@@ -212,44 +195,7 @@ public class ContainerArrangement extends JFrame {
 	         } 
 	      }
 	   }   
-   private class Task2 extends Thread {    
-	      public Task2(){
-	      }
-	      public void run(){
-	    	  SwingUtilities.invokeLater(new Runnable() {
-	               public void run() {
-	    	    int g =0;
-	 			int f = nr.length-1;
-	 			for (int i = 0; i < r.length; i++) {
-	     			for (int j = 0; j < r.length; j++) {
-	     				 if ( g  > r.length -1)
-		     			    {
-		     			    	break;
-		     			    }
-	     			    if(r[i][j].getN() == nr[f][g].getN())
-	     			    {	 
-	     			    	System.out.println(nr[f][g].getN());
-	     			    	f = f - 1 ;
-	     			        if( f <  0)
-	     			        {
-	     			        	System.out.println("hello");
-	     			        	g++;
-	     			        	f = r.length-1;	
-	     			        }
-	     			        i = 0 ; 
-	     			        j = -1 ;
-	     			    }
-	     			   
-	     			}
-	 			}
-	               }
-		            });
-		            try {
-		               Thread.sleep(100);
-		            } catch (InterruptedException e) {} 
-	      
-	   }   
-   }
+   	
    class DrawCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	@Override
@@ -265,9 +211,12 @@ public class ContainerArrangement extends JFrame {
            for (int i = 0; i < inputdata.length; i++) {
     		int[] row = inputdata[i];
 			for (int j = 0; j < row.length; j++) { 
+				if(r[i][j].getN() != 0)
+				{
 		         g.drawRect(r[i][j].x, r[i][j].y, x2, y2); 
 		         drawCenteredString(g,String.valueOf(row[j]),r[i][j],g.getFont());
 		         xpos = xpos +60;
+				}
 			}
 			xpos = 60;
 			ypos = ypos + 60;
