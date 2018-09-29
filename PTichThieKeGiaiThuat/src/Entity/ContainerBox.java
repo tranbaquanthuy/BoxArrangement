@@ -3,40 +3,60 @@ import java.awt.Rectangle;
 
 public class ContainerBox extends Rectangle {
 	private static final long serialVersionUID = 1L;
-	public ContainerBox(double width, double height, int n) {
-		super();
-		this.width = width;
-		this.height = height;
-		this.n = n;
-	}
 	public ContainerBox(int i, int j, int k, int l, int m, int o, int p) {
-		super.height = i;
-		super.width = j;
-		super.x =  k;
-		super.y = l;
-		this.width = m;
-		this.height = 0;
+		super.x = i;
+		super.y = j;
+		super.height =  k;
+		super.width = l;
+		this.rowpos = m;
+		this.colpos = o;
 		this.n = p;
 	}
-	public double width = 50;
-    public double height = 50;
-    public int n ;
-	public double getWidth() {
-		return width;
+	public ContainerBox(int i, int j, int k, int l, int m, int o) {
+		super.x = i;
+		super.y = j;
+		super.height =  k;
+		super.width = l;
+		this.rowpos = m;
+		this.colpos = o;
 	}
-	public void setWidth(int width) {
-		this.width = width;
+	private int rowpos ;
+	private int colpos ;
+	private int nrowpos ;
+	private int ncolpos ;
+	private int n ;
+	public double getRowpos() {
+		return rowpos;
 	}
-	public double getHeight() {
-		return height;
+	public void setRowpos(int rowpos) {
+		this.rowpos = rowpos;
 	}
-	public void setHeight(int height) {
-		this.height = height;
+	public double getColpos() {
+		return colpos;
+	}
+	public void setColpos(int colpos) {
+		this.colpos = colpos;
 	}
 	public int getN() {
 		return n;
 	}
 	public void setN(int n) {
 		this.n = n;
-	} 
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public int getNrowpos() {
+		return nrowpos;
+	}
+	public void setNrowpos(int nrowpos) {
+		this.nrowpos = nrowpos;
+	}
+	public int getNcolpos() {
+		return ncolpos;
+	}
+	public void setNcolpos(int ncolpos) {
+		this.ncolpos = ncolpos;
+	}
+	
 }

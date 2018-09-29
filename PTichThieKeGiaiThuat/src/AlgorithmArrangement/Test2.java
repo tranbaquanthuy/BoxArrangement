@@ -5,11 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Entity.ContainerBox;
 public class Test2 {
 
-	public static void main(String[] args) {
+	/*	public static void main(String[] args) {
 	   int  inputdata[][] = {{0,6,15},{5,7,4},{30,21,11}};
-	/*	int inputdata[][] = new int[2000][2000];
+int inputdata[][] = new int[2000][2000];
 		for (int i = 0; i < inputdata.length; i++) {
     		int[] row = inputdata[i];
 			for (int j = 0; j < row.length; j++) {
@@ -20,7 +21,7 @@ public class Test2 {
 	   myList = exchangeDimension2(inputdata);
 	   long stopTime2 = System.currentTimeMillis();;
 	   long elapsedTime2 = stopTime2 - startTime2;
-	   System.out.println("time sau "+elapsedTime2);*/
+	   System.out.println("time sau "+elapsedTime2);
 	   List<Integer> myList = new ArrayList<Integer>();
 		  
 	   long startTime = System.currentTimeMillis();;
@@ -54,6 +55,7 @@ public class Test2 {
 	       System.out.println("\n");
 	       printMyList(myList1); 
 	}
+  */
 	public static void setElementCheckList(int inputdata[][],int checkList[][]) 
 	{
 		for (int i = 0; i < inputdata.length; i++) {
@@ -153,11 +155,11 @@ public class Test2 {
     	
     	//return myList;
     }
-    public static void arrangeMyListSquare(int inputdata[][],int checkList[][],int myList1[][])
+    public static void arrangeMyListSquare(int inputdata[][],int checkList[][],int myList1[][] )
     {
     	
     	int currentrowpos = 0;
-    	int currentcolpos = inputdata.length-10;
+    	int currentcolpos = inputdata.length-1;
     	List<Integer> tempList = new ArrayList<Integer>();
     	int row  = inputdata.length;
     	List<Integer> temprowpos = new ArrayList<Integer>();
@@ -169,15 +171,51 @@ public class Test2 {
     		{
     			   System.out.println("j : "+j);
     			   tempList.add(inputdata[i][j]);
+    			   checkList[i][j]   = 1 ; 			   
     			   temprowpos.add(i);
     			   tempcolpos.add(j);
-    			   if(tempList.size() == row  )
+    			   if(tempList.size() == row)
     			   {
     				Collections.sort(tempList);
     				for(int k = 0 ; k < tempList.size();k++)
     				{
     					System.out.println("k :" +tempList.get(k));
-    					 myList1[k][currentrowpos] = tempList.get(k) ;
+    					myList1[k][currentrowpos] = tempList.get(k) ;
+    					 
+    				}
+    				   currentrowpos +=1; 
+        			   tempList.removeAll(tempList);
+        			   temprowpos.removeAll(temprowpos);
+        			   tempcolpos.removeAll(tempcolpos);
+        
+    			   }
+    			   
+    		   
+    		}
+    	}
+    }
+    public void arrangeMyListSquare(ContainerBox[][] r,ContainerBox[][] nr  )
+    {
+    	
+    	int currentrowpos = 0;
+    //	int currentcolpos = r.length-1;
+    	List<Integer> tempList = new ArrayList<Integer>();
+    	int row  = r.length;
+    	List<Integer> temprowpos = new ArrayList<Integer>();
+    	List<Integer> tempcolpos = new ArrayList<Integer>();
+    	for(int i=0;i < r[row-1].length;i++)
+    	{
+    		for(int j=0;j < row;j++)
+    		{
+    			   tempList.add(r[i][j].getN());
+    			   temprowpos.add(i);
+    			   tempcolpos.add(j);
+    			   if(tempList.size() == row)
+    			   {
+    				Collections.sort(tempList);
+    				for(int k = 0 ; k < tempList.size();k++)
+    				{
+    					nr[k][currentrowpos].setN(tempList.get(k)); 
     					 
     				}
     				   currentrowpos +=1; 
@@ -221,4 +259,15 @@ public class Test2 {
 		}
     	
     }
+    public void printMyList2(ContainerBox[][] r) {
+    	for (int i = 0; i < r.length; i++) {
+    		ContainerBox[] row = r[i];
+			for (int j = 0; j < row.length; j++) {
+				System.out.print(row[j].getN() + " ");
+			}
+			System.out.println();
+		}
+    	
+    }
+   
 }
