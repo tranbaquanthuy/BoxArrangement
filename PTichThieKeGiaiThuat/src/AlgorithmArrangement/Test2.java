@@ -194,12 +194,32 @@ int inputdata[][] = new int[2000][2000];
     		}
     	}
     }
+    public void arrangeMyListSquare2(ContainerBox[][] r,ContainerBox[][] nr  )
+    {
+    	nr = r;
+    	int row  = nr.length;  	
+    	for(int i=0;i < nr[row-1].length;i++)
+    	{
+    			   Arrays.sort(nr[i]);
+    			   for(int  l = 0   ; l < nr[i].length ; l++)
+    			   {
+    				  nr[i][l].setNumberpickup(i*nr[i].length+nr[i].length-l);
+    			   }
+    			   
+    	}
+    	 System.out.println(nr[2][2].getNumberpickup());
+    	 System.out.println(nr[2][2].getN());
+    	 System.out.println(nr[2][2].getRowpos());
+    	 System.out.println(nr[2][2].getColpos());
+    }
     public void arrangeMyListSquare(ContainerBox[][] r,ContainerBox[][] nr  )
     {
     	
     	int currentrowpos = 0;
     //	int currentcolpos = r.length-1;
     	List<Integer> tempList = new ArrayList<Integer>();
+       // Pair[] yourArray = new Pair[r[r.length-1].length];
+        Pair[][] yourArray = new Pair[r.length][r[r.length-1].length];
     	int row  = r.length;
     	List<Integer> temprowpos = new ArrayList<Integer>();
     	List<Integer> tempcolpos = new ArrayList<Integer>();
@@ -207,22 +227,30 @@ int inputdata[][] = new int[2000][2000];
     	{
     		for(int j=0;j < row;j++)
     		{
-    			   tempList.add(r[i][j].getN());
+    			 tempList.add(r[i][j].getN());
+    			  // yourArray[j] = new Pair(i*j+j,r[i][j].getN());
+    			  // yourArray[i][j] = new Pair(i*(r[r.length-1].length)+j,r[i][j].getN());
+    			  // System.out.println(yourArray[j].getValue());
+    			//   System.out.println(yourArray[i][j].getValue());
+    			 //  System.out.println("index :" +yourArray[i*j+j].getIndex());
+    			//   System.out.println("index :" +yourArray[i][j].getIndex());
+    			//   Arrays.sort(r[i]);
     			   temprowpos.add(i);
     			   tempcolpos.add(j);
     			   if(tempList.size() == row)
     			   {
     				Collections.sort(tempList);
+    		//	Arrays.sort(yourArray[i]);
     				for(int k = 0 ; k < tempList.size();k++)
     				{
-    					nr[k][currentrowpos].setN(tempList.get(k)); 
-    					 
+    					nr[k][currentrowpos].setN(tempList.get(k));
+    					nr[k][currentrowpos].setNumberpickup(i*r.length+r.length-k);
+    					//nr[k][currentrowpos].setN(yourArray[i][k].getValue());
     				}
     				   currentrowpos +=1; 
         			   tempList.removeAll(tempList);
         			   temprowpos.removeAll(temprowpos);
         			   tempcolpos.removeAll(tempcolpos);
-        
     			   }
     			   
     		   
@@ -269,5 +297,24 @@ int inputdata[][] = new int[2000][2000];
 		}
     	
     }
-   
+    public void printMyList3(ContainerBox[][] r) {
+    	for (int i = 0; i < r.length; i++) {
+    		ContainerBox[] row = r[i];
+			for (int j = 0; j < row.length; j++) {
+				System.out.print(row[j].getNumberpickup() + " ");
+			}
+			System.out.println();
+		}
+    	
+    }
+    public void printMyList4(ContainerBox[][] r) {
+    	for (int i = 0; i < r.length; i++) {
+    		ContainerBox[] row = r[i];
+			for (int j = 0; j < row.length; j++) {
+				System.out.print(row[j].getColpos() + "."+ row[j].getRowpos() + " ");
+			}
+			System.out.println();
+		}
+    	
+    }
 }

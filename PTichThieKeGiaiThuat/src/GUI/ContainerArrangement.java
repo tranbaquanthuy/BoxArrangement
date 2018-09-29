@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,18 +35,20 @@ public class ContainerArrangement extends JFrame {
    private int distance= 500;
    private int startxpos,startypos;
    private boolean s= false,sort= false;
-   private Task task;
+   private Task2 task;
    private JProgressBar progressBar;
    private  JLabel outputTextArea;
    int  inputdata[][] ;
    int row = 0;
    int col = 0;
+   int a,b;
+   int c,d;
    ContainerBox[][] r,nr;
-   int l = 0;
-   private DrawCanvas canvas; // The custom drawing canvas (an inner class extends JPanel)
-   // Constructor to set up the GUI components and event handlers
+   int l = 0,m=0,k=0;
+   private List<ContainerBox> test;
+   private DrawCanvas canvas;
    public ContainerArrangement() {
-	  int rawinputdata[][] =  {{0,6,15},{5,7,4},{30,21,11}};
+	  int rawinputdata[][] =  {{0,6,15,1},{2,5,7,4},{30,8,21,11},{13,18,14,36}};
 	  inputdata = rawinputdata;
 	  row  = inputdata.length;
 	  col = inputdata[inputdata.length-1].length;
@@ -60,60 +63,125 @@ public class ContainerArrangement extends JFrame {
       btnPanel.add(btnStart);
       btnPanel.add(progressBar);
       btnPanel.add(outputTextArea);
+     
+      Timer timer = new Timer(10, new ActionListener() {
+ 		 @Override
+          public void actionPerformed(ActionEvent e) {
+ 			int g =0;
+ 			int f = nr.length-1;
+ 			for (int i = 0; i < r.length; i++) {
+     			for (int j = 0; j < r.length; j++) {
+     				if ( g  > r.length -1)
+	     			    {
+	     			    	((Timer)e.getSource()).stop();
+	     			    	break;
+	     			    }
+     			    if(r[i][j].getN() == nr[f][g].getN() )
+     			    {	 
+     			       
+     			    	System.out.println(nr[f][g].getN());
+     			    	f = f - 1 ;
+     			        if( f <  0)
+     			        {
+     			        	g++;
+     			        	f = r.length-1;	
+     			        }
+     			        i = 0 ; 
+     			        j = -1 ;
+     			      
+     			    }
+     			  
+     			}
+            } 
+ 		 }
+ 		 });
+      Timer timer2 = new Timer(2, new ActionListener() {
+  		 @Override
+           public void actionPerformed(ActionEvent e) {
+  		for (int a = 0 ; a < r.length ; a++) {  
+  			for(int b =  0; b < r.length ; b++) {
+  		  
+  		  if (c < 0 && d >= r.length-1)
+  		          {
+  		        		 ((Timer)e.getSource()).stop();
+  		          }
+  		  else {
+  		  if(r[a][b].getN() == nr[c][d].getN())
+  		  {
+  			  if (l < y2 + (y2 * a) ) {
+	        	 l = l + 1;
+	        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y -1); 
+	             canvas.repaint();  
+	          }
+        	  else if (m < y2*3 + y2 * (r.length - 1 - b) + y2 * d && xpos < CANVAS_HEIGHT) {
+	        	 m = m + 1;
+	        	r[a][b].setLocation(r[a][b].x +1 , r[a][b].y ); 
+	             canvas.repaint();
+	          }
+	          else if (k < y2  + y2 * c && ypos <CANVAS_WIDTH && m >= y2*3 )
+	          {
+	        	 k = k + 1;
+	        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y +1 ); 
+	             canvas.repaint();
+	          }    
+	          else
+	          {
+	        	  l  =  0;
+	        	  m = 0;
+	        	  k = 0;
+	        	  c--;
+	        	  if(c < 0 && d < r.length-1 )
+	      	      {
+	      		  c = r.length-1;
+	      		  d++;
+	      	      }
+	          }
+  		  }
+  			}
+  			}
+  	  }
+  		
+  		 }
+  		 
+  		 });
       btnStart.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
      //   	 task = new Task();                
 	   //     task.start();
-        	 Test2  n = new Test2();
+        //	 task = new Task2();                
+      	  //      task.start();
+       	 Test2  n = new Test2();
          	n.arrangeMyListSquare(r, nr);
          	n.printMyList2(nr);
+         	// test = createContainerList();
+         	//n.printMyList3(nr);
+         	//n.printMyList4(nr);
 	         startxpos = xpos;
 	         startypos = ypos;
-      		 sort = true;
-        	 Timer timer = new Timer(5, new ActionListener() {
-        		 int i,j = 0;
-                 @Override
-                 public void actionPerformed(ActionEvent e) {
-                	
-                	  if (l < 60 ) {
-         	        	 l = l + 1;
-         	        	 r[0][1].setLocation(r[0][1].x  , r[0][1].y -1); 
-         	             canvas.repaint();
-         	            
-         	         }
-                 	  else if (i < y2*3 && xpos < CANVAS_HEIGHT) {
-         	        	 i = i + 1;
-         	        	r[0][1].setLocation(r[0][1].x +1 , r[0][1].y ); 
-         	             canvas.repaint();
-         	          }
-         	          else if (j < y2*3  && ypos <CANVAS_WIDTH && i >= y2*3 )
-        	          {
-        	        	 j = j + 1;
-        	        	 r[0][1].setLocation(r[0][1].x  , r[0][1].y +1 ); 
-        	             canvas.repaint();
-        	          }
-         	          else
-         	          {
-         	        	 ((Timer)e.getSource()).stop();
-         	          }  
-                 }
-        	 });
-             timer.start();     
-        	    }
+      		 sort = true;	
+      	//	while(a  < 2)
+      	//	{
+      		 c= r.length-1;
+             timer2.start();
+           //  a++;
+ 
+      	//	}
+      	//	timer.start();
+         }
       });
-      // Set up a custom drawing JPanel
       canvas = new DrawCanvas();
       canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-      // Add both panels to this JFrame's content-pane
       Container cp = getContentPane();
       cp.setLayout(new BorderLayout());
       cp.add(canvas, BorderLayout.CENTER);
       cp.add(btnPanel, BorderLayout.SOUTH);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
       setTitle("Arranging Container Boxes");
-      pack();           // pack all the components in the JFrame
+      pack();
       setVisible(true); 
    }
+   
+
    private class Task extends Thread {    
 	      public Task(){
 	      }
@@ -144,7 +212,44 @@ public class ContainerArrangement extends JFrame {
 	         } 
 	      }
 	   }   
- 
+   private class Task2 extends Thread {    
+	      public Task2(){
+	      }
+	      public void run(){
+	    	  SwingUtilities.invokeLater(new Runnable() {
+	               public void run() {
+	    	    int g =0;
+	 			int f = nr.length-1;
+	 			for (int i = 0; i < r.length; i++) {
+	     			for (int j = 0; j < r.length; j++) {
+	     				 if ( g  > r.length -1)
+		     			    {
+		     			    	break;
+		     			    }
+	     			    if(r[i][j].getN() == nr[f][g].getN())
+	     			    {	 
+	     			    	System.out.println(nr[f][g].getN());
+	     			    	f = f - 1 ;
+	     			        if( f <  0)
+	     			        {
+	     			        	System.out.println("hello");
+	     			        	g++;
+	     			        	f = r.length-1;	
+	     			        }
+	     			        i = 0 ; 
+	     			        j = -1 ;
+	     			    }
+	     			   
+	     			}
+	 			}
+	               }
+		            });
+		            try {
+		               Thread.sleep(100);
+		            } catch (InterruptedException e) {} 
+	      
+	   }   
+   }
    class DrawCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
 	@Override
