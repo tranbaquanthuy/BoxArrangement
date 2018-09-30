@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +21,7 @@ import javax.swing.Timer;
 
 import AlgorithmArrangement.Test2;
 import Entity.ContainerBox;
+import Entity.SortingObject;
 public class ContainerArrangement extends JFrame {
 	private static final long serialVersionUID = 1L;
    public static final int CANVAS_WIDTH = 900;
@@ -43,9 +43,9 @@ public class ContainerArrangement extends JFrame {
    int col = 0;
    int a,b;
    int c,d;
-   ContainerBox[][] r,nr;
+   ContainerBox[][] r;
+   SortingObject[][] nr;
    int l = 0,m=0,k=0;
-   private List<ContainerBox> test;
    private DrawCanvas canvas;
    public ContainerArrangement() {
 	  int rawinputdata[][] =  {{0,6,15,1},{2,5,7,4},{30,8,21,11},{13,18,14,36}};
@@ -53,24 +53,25 @@ public class ContainerArrangement extends JFrame {
 	  row  = inputdata.length;
 	  col = inputdata[inputdata.length-1].length;
 	  r = new ContainerBox[row][col];
-	  nr =new ContainerBox[row][col];
+	  nr =new SortingObject[row][col];
       JPanel btnPanel = new JPanel(new FlowLayout());
       JButton btnStart = new JButton("Start");
+      JButton btnSort = new JButton("Sort");
 	  progressBar = new JProgressBar(0, 100);
 	  progressBar.setValue(0);
 	  progressBar.setStringPainted(true);
 	  outputTextArea = new  JLabel("Completed 0% of task.\n");
-      btnPanel.add(btnStart);
+	  btnPanel.add(btnSort);
+	  btnPanel.add(btnStart);
       btnPanel.add(progressBar);
       btnPanel.add(outputTextArea);
-     
-      
+      Test2  n = new Test2();
+
       Timer timer2 = new Timer(2, new ActionListener() {
   		 @Override
            public void actionPerformed(ActionEvent e) {
   		for (int a = 0 ; a < r.length ; a++) {  
   			for(int b =  0; b < r.length ; b++) {
-  		  
   		  if (c < 0 && d >= r.length-1)
   		          {
   		        		 ((Timer)e.getSource()).stop();
@@ -110,8 +111,6 @@ public class ContainerArrangement extends JFrame {
 	          }
   		  }
   			}
-  			
-  			
   			else {
   				  c--;
 	        	  if(c < 0 && d < r.length-1 )
@@ -123,34 +122,26 @@ public class ContainerArrangement extends JFrame {
   			}
   			}
   	  }
-  		
   		 }
-  		 
   		 });
       btnStart.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent evt) {
      //   	 task = new Task();                
 	   //     task.start();
-        //	 task = new Task2();                
-      	  //      task.start();
-       	 Test2  n = new Test2();
-         	n.arrangeMyListSquare(r, nr);
-         	n.printMyList2(nr);
-         	// test = createContainerList();
-         	//n.printMyList3(nr);
-         	//n.printMyList4(nr);
+         	 n.arrangeMyListSquare(r, nr);
+         	 n.printMyList(nr);
 	         startxpos = xpos;
 	         startypos = ypos;
       		 sort = true;	
-      	//	while(a  < 2)
-      	//	{
       		 c= r.length-1;
              timer2.start();
-           //  a++;
- 
-      	//	}
-      	//	timer.start();
          }
+      });
+      btnSort.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent evt) {
+        	  sort = true;
+        	  canvas.repaint();
+          }
       });
       canvas = new DrawCanvas();
       canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -203,6 +194,7 @@ public class ContainerArrangement extends JFrame {
          super.paintComponent(g);
          setBackground(CANVAS_BACKGROUND);
          g.setColor(BOX_COLOR);
+      if(sort == true) {
         if (r[0][0] == null)
         {
     	  createRec();
@@ -223,15 +215,15 @@ public class ContainerArrangement extends JFrame {
 		  }
            xpos = 60;
            ypos  = 120;
-        
       }
+	}
       public  void createRec() {
       int k=0;
       for (int i = 0; i < inputdata.length; i++) {
    		int[] row = inputdata[i];
    		for (int j = 0; j < row.length; j++) { 
    			 r[i][j] = new ContainerBox(xpos, ypos, x2, y2 , i , j, row[j]);
-   			 nr[i][j] = new ContainerBox(xpos, ypos, x2, y2 , i , j);
+   			 nr[i][j] = new SortingObject(i,j,row[j]);
    			 xpos = xpos +60;
    			 k = k+1;
    		}

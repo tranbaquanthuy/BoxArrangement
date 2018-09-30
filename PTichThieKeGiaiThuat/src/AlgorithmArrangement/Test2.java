@@ -1,61 +1,13 @@
 package AlgorithmArrangement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import Entity.ContainerBox;
+import Entity.SortingObject;
 public class Test2 {
 
-	/*	public static void main(String[] args) {
-	   int  inputdata[][] = {{0,6,15},{5,7,4},{30,21,11}};
-int inputdata[][] = new int[2000][2000];
-		for (int i = 0; i < inputdata.length; i++) {
-    		int[] row = inputdata[i];
-			for (int j = 0; j < row.length; j++) {
-				row[j] = 1;
-			}
-		}
-	     long startTime2 = System.currentTimeMillis();;
-	   myList = exchangeDimension2(inputdata);
-	   long stopTime2 = System.currentTimeMillis();;
-	   long elapsedTime2 = stopTime2 - startTime2;
-	   System.out.println("time sau "+elapsedTime2);
-	   List<Integer> myList = new ArrayList<Integer>();
-		  
-	   long startTime = System.currentTimeMillis();;
-	   myList = exchangeDimension(inputdata);
-	   long stopTime = System.currentTimeMillis();;
-	   long elapsedTime = stopTime - startTime;
-	   System.out.println("time đầu " + elapsedTime);
-	    System.out.println("mảng đầu vào :");
-	       printMyList(inputdata);
-	       System.out.println(myList);
-	       System.out.println("số dòng : ");
-	       System.out.println(inputdata.length);
-	       System.out.println("số cột : ");
-	       int  n = inputdata.length;
-	       System.out.println(inputdata[n-1].length);
-	       System.out.println("\n");
-	       System.out.println("mảng 1 chiều sort :");
-	       Collections.sort(myList);
-	       System.out.println(myList);
-	       System.out.println("\n");
-	       System.out.println("mảng check giá trị :");
-	       int  checkList[][] = new int [inputdata.length][inputdata[inputdata.length-1].length] ;
-	       setElementCheckList(inputdata,checkList);
-	       printMyList(checkList);
-	       System.out.println("\n");
-	       int  myList1[][] = new int [inputdata.length][inputdata[inputdata.length-1].length] ;
-	       System.out.println("test thuật toán : ");
-	      // int  outputdata[][] =
-	       arrangeMyListSquare(inputdata,checkList,myList1);
-	       printMyList(checkList);
-	       System.out.println("\n");
-	       printMyList(myList1); 
-	}
-  */
+
 	public static void setElementCheckList(int inputdata[][],int checkList[][]) 
 	{
 		for (int i = 0; i < inputdata.length; i++) {
@@ -80,9 +32,6 @@ int inputdata[][] = new int[2000][2000];
     	int currentcolpos = 0;
     	List<Integer> tempList = new ArrayList<Integer>();
     	int row  = inputdata.length;
-    /*	int max = 0;
-    	int previousposrowmax = -1;
-    	int previousposcolmax = -1; */
     	List<Integer> temprowpos = new ArrayList<Integer>();
     	List<Integer> tempcolpos = new ArrayList<Integer>();
     	for(int i=0;i < inputdata[row-1].length;i++)
@@ -93,27 +42,7 @@ int inputdata[][] = new int[2000][2000];
     			System.out.println("j : "+j);
     		   if(inputdata[j][i] != 0 && checkList[j][i] != 1 )//&& inputdata[j][i] > max)
     		   {
-    			   /*  if(previousposrowmax == -1)
-    			   {
-    				   
-    				   max = inputdata[j][i];
-    				   System.out.println("-");
-    				   System.out.println(max );
-    				   checkList[j][i] = 1;
-    				   previousposrowmax = j;
-    				   previousposcolmax = i;
-    			   }
-    			   else 
-    			   {
-    				   max = inputdata[j][i];
-    				   System.out.println("--");
-    				   System.out.println(max);
-    				   checkList[previousposrowmax][previousposrowmax] = 0; 
-    				   checkList[j][i] = 1; 	
-    				   previousposrowmax = j;
-    				   previousposcolmax = i;
-    			   }
-    			   break;*/
+    			  
     			   tempList.add(inputdata[j][i]);
     			   temprowpos.add(j);
     			   tempcolpos.add(i);
@@ -194,68 +123,30 @@ int inputdata[][] = new int[2000][2000];
     		}
     	}
     }
-    public void arrangeMyListSquare2(ContainerBox[][] r,ContainerBox[][] nr  )
+
+    public void arrangeMyListSquare(ContainerBox[][] r,SortingObject[][] nr  )
     {
-    	nr = r;
-    	int row  = nr.length;  	
-    	for(int i=0;i < nr[row-1].length;i++)
-    	{
-    			   Arrays.sort(nr[i]);
-    			   for(int  l = 0   ; l < nr[i].length ; l++)
-    			   {
-    				  nr[i][l].setNumberpickup(i*nr[i].length+nr[i].length-l);
-    			   }
-    			   
-    	}
-    	 System.out.println(nr[2][2].getNumberpickup());
-    	 System.out.println(nr[2][2].getN());
-    	 System.out.println(nr[2][2].getRowpos());
-    	 System.out.println(nr[2][2].getColpos());
-    }
-    public void arrangeMyListSquare(ContainerBox[][] r,ContainerBox[][] nr  )
-    {
-    	
     	int currentrowpos = 0;
-    //	int currentcolpos = r.length-1;
+    	int row  = r.length;	
     	List<Integer> tempList = new ArrayList<Integer>();
-       // Pair[] yourArray = new Pair[r[r.length-1].length];
-        Pair[][] yourArray = new Pair[r.length][r[r.length-1].length];
-    	int row  = r.length;
-    	List<Integer> temprowpos = new ArrayList<Integer>();
-    	List<Integer> tempcolpos = new ArrayList<Integer>();
-    	for(int i=0;i < r[row-1].length;i++)
+     	for(int i=0;i < r[row-1].length;i++)
     	{
     		for(int j=0;j < row;j++)
     		{
-    			 tempList.add(r[i][j].getN());
-    			  // yourArray[j] = new Pair(i*j+j,r[i][j].getN());
-    			  // yourArray[i][j] = new Pair(i*(r[r.length-1].length)+j,r[i][j].getN());
-    			  // System.out.println(yourArray[j].getValue());
-    			//   System.out.println(yourArray[i][j].getValue());
-    			 //  System.out.println("index :" +yourArray[i*j+j].getIndex());
-    			//   System.out.println("index :" +yourArray[i][j].getIndex());
-    			//   Arrays.sort(r[i]);
-    			   temprowpos.add(i);
-    			   tempcolpos.add(j);
-    			   if(tempList.size() == row)
-    			   {
-    				Collections.sort(tempList);
-    		//	Arrays.sort(yourArray[i]);
-    				for(int k = 0 ; k < tempList.size();k++)
-    				{
-    					nr[k][currentrowpos].setN(tempList.get(k));
-    					nr[k][currentrowpos].setNumberpickup(i*r.length+r.length-k);
-    					//nr[k][currentrowpos].setN(yourArray[i][k].getValue());
-    				}
-    				   currentrowpos +=1; 
-        			   tempList.removeAll(tempList);
-        			   temprowpos.removeAll(temprowpos);
-        			   tempcolpos.removeAll(tempcolpos);
-    			   }
-    			   
-    		   
+    		   tempList.add(r[i][j].getN());
+  			   if(tempList.size() == row)
+  			   {
+  				Collections.sort(tempList);	
+  				for(int k = 0 ; k < tempList.size();k++)
+  				{
+  					nr[k][currentrowpos].setN(tempList.get(k));
+  				}
+  				   currentrowpos +=1; 
+      			   tempList.removeAll(tempList);
+  			   }
     		}
     	}
+    	
     }
     public static List<Integer> exchangeDimension(int inputdata[][])
     {
@@ -269,19 +160,11 @@ int inputdata[][] = new int[2000][2000];
     	}
     	return myList;
     }
-    public static List<Integer> exchangeDimension2(int inputdata[][])
-    {
-       List<Integer> myList = Arrays.stream(inputdata)
-     		   .flatMapToInt(array -> Arrays.stream(array).map(Integer::valueOf))
-     		   .mapToObj(i->i).collect(Collectors.toList());
-       return myList;
-        
-    }
-    private static void printMyList(int inputdata[][]) {
-    	for (int i = 0; i < inputdata.length; i++) {
-    		int[] row = inputdata[i];
-			for (int j = 0; j < row.length; j++) {
-				System.out.print(row[j] + " ");
+
+    public void printMyList(SortingObject[][] nr) {
+    	for (int i = 0; i < nr.length; i++) {
+			for (int j = 0; j < nr[nr.length-1].length; j++) {
+				System.out.print(nr[i][j].getN() + " ");
 			}
 			System.out.println();
 		}
@@ -292,26 +175,6 @@ int inputdata[][] = new int[2000][2000];
     		ContainerBox[] row = r[i];
 			for (int j = 0; j < row.length; j++) {
 				System.out.print(row[j].getN() + " ");
-			}
-			System.out.println();
-		}
-    	
-    }
-    public void printMyList3(ContainerBox[][] r) {
-    	for (int i = 0; i < r.length; i++) {
-    		ContainerBox[] row = r[i];
-			for (int j = 0; j < row.length; j++) {
-				System.out.print(row[j].getNumberpickup() + " ");
-			}
-			System.out.println();
-		}
-    	
-    }
-    public void printMyList4(ContainerBox[][] r) {
-    	for (int i = 0; i < r.length; i++) {
-    		ContainerBox[] row = r[i];
-			for (int j = 0; j < row.length; j++) {
-				System.out.print(row[j].getColpos() + "."+ row[j].getRowpos() + " ");
 			}
 			System.out.println();
 		}
