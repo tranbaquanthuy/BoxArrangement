@@ -1,7 +1,7 @@
 package Entity;
 import java.awt.Rectangle;
 
-public class ContainerBox extends Rectangle {
+public class ContainerBox extends Rectangle implements Comparable<ContainerBox> {
 	private static final long serialVersionUID = 1L;
 	public ContainerBox(int i, int j, int k, int l, int m, int o, int p) {
 		super.x = i;
@@ -11,6 +11,12 @@ public class ContainerBox extends Rectangle {
 		this.rowpos = m;
 		this.colpos = o;
 		this.n = p;
+	}
+	public ContainerBox(int i, int j, int k,boolean _moved) {
+		this.rowpos = i;
+		this.colpos = j;
+		this.n = k;
+		this.moved = _moved;
 	}
 	public ContainerBox(int i, int j, int k, int l, int m, int o) {
 		super.x = i;
@@ -23,6 +29,8 @@ public class ContainerBox extends Rectangle {
 	private int rowpos ;
 	private int colpos ;
 	private int n ;
+	private boolean checked = false ;
+	private boolean moved = false;
 	public double getRowpos() {
 		return rowpos;
 	}
@@ -43,6 +51,23 @@ public class ContainerBox extends Rectangle {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	@Override
+	public int compareTo(ContainerBox o) {
+		// TODO Auto-generated method stub
+		return   Integer.valueOf(this.n).compareTo(o.n);
+	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+	public boolean isMoved() {
+		return moved;
+	}
+	public void setMoved(boolean moved) {
+		this.moved = moved;
 	}
 
 	

@@ -1,15 +1,22 @@
 package Entity;
 
-public class SortingObject  implements Comparable<SortingObject> {
+public class SortingObject   {
 	public SortingObject(int rowpos, int colpos, int n) {
 		super();
 		this.rowpos = rowpos;
 		this.colpos = colpos;
 		this.n = n;
 	}
+	public SortingObject(int i, int j, int k,boolean _moved) {
+		this.rowpos = i;
+		this.colpos = j;
+		this.n = k;
+		this.setMoved(_moved);
+	}
 	private int rowpos ;
 	private int colpos ;
 	private int n ;
+	private boolean moved = false;
 	public double getRowpos() {
 		return rowpos;
 	}
@@ -28,9 +35,11 @@ public class SortingObject  implements Comparable<SortingObject> {
 	public void setN(int n) {
 		this.n = n;
 	}
-	@Override
-	public int compareTo(SortingObject other) {
-	        //multiplied to -1 as the author need descending sort order
-	        return   Integer.valueOf(this.n).compareTo(other.n);
-	    }
+	public boolean isMoved() {
+		return moved;
+	}
+	public void setMoved(boolean moved) {
+		this.moved = moved;
+	}
+	
 }
