@@ -26,6 +26,16 @@ public class ContainerBox extends Rectangle implements Comparable<ContainerBox> 
 		this.rowpos = m;
 		this.colpos = o;
 	}
+	public ContainerBox(int i, int j, int k, int l, int m, int o, int p, boolean n) {
+		super.x = i;
+		super.y = j;
+		super.height =  k;
+		super.width = l;
+		this.rowpos = m;
+		this.colpos = o;
+		this.n = p;
+		this.moved = n ;
+	}
 	private int rowpos ;
 	private int colpos ;
 	private int n ;

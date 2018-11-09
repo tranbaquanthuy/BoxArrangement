@@ -8,6 +8,7 @@ public class SortingObject   {
 		this.n = n;
 	}
 	public SortingObject(int i, int j, int k,boolean _moved) {
+		super();
 		this.rowpos = i;
 		this.colpos = j;
 		this.n = k;
@@ -16,6 +17,8 @@ public class SortingObject   {
 	private int rowpos ;
 	private int colpos ;
 	private int n ;
+	private int orirowpos;
+	private int oricolpos ;
 	private boolean moved = false;
 	public double getRowpos() {
 		return rowpos;
@@ -40,6 +43,18 @@ public class SortingObject   {
 	}
 	public void setMoved(boolean moved) {
 		this.moved = moved;
+	}
+	public int getOricolpos() {
+		return oricolpos;
+	}
+	public void setOricolpos(int oricolpos) {
+		this.oricolpos = oricolpos;
+	}
+	public int getOrirowpos() {
+		return orirowpos;
+	}
+	public void setOrirowpos(int orirowpos) {
+		this.orirowpos = orirowpos;
 	}
 	
 }
