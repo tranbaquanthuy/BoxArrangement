@@ -17,6 +17,15 @@ public class InputReader {
 	public void CloseReader() throws IOException {
 	    br.close();
 	}
+	public String getAllContent(String link) throws IOException {
+		CreateReader(link);
+		String ac = "";
+		  String st = ""; 
+		  while ((st = br.readLine()) != null) {
+			  ac = ac + st + "\n";
+		  }	  
+		  return ac;
+	}
 	public Integer getHeight(String link) throws IOException {
               CreateReader(link);
 			  String st; 

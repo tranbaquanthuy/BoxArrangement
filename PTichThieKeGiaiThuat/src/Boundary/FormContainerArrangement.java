@@ -14,8 +14,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -29,6 +31,7 @@ import javax.swing.Timer;
 import AlgorithmArrangement.ArrangingAlgorithm;
 import Entity.ContainerBox;
 import Entity.InputReader;
+import Entity.OutputWriter;
 import Entity.SailBoat;
 import Entity.SortingObject;
 public class FormContainerArrangement extends JFrame  implements ActionListener {
@@ -38,8 +41,16 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    private int startxpos = 50; 
    private int startypos = 240;
    private int edgelenght = 60 ; 
+   
+   public static int columnyard = 0;
+   public static List<Queue> endstack = new ArrayList<Queue>();
+   //Read and Write output 
    private String filePath;
    private String fileName;
+   private String parentPath;
+   private String contentwriter = "";
+   
+   
    private boolean sort= false;
    private Task task;
    private JProgressBar progressBar,progressBarpart;
@@ -129,10 +140,16 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    @Override
    public void actionPerformed(ActionEvent e) {
 	   if(e.getActionCommand() == "Sort") {
-
-		
+            InputReader n2 = new InputReader();
+            InputReader r2 = new InputReader();
+            try {
+				contentwriter = r2.getAllContent(filePath);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 		   ArrangingAlgorithm  n = new ArrangingAlgorithm();
-		   //n.printMyList(r);
+		   long startTime = System.nanoTime();	 
 		   if(r.length == r[r.length-1].length)
 		   {
 			   n.arrangeMyListSquare(r, nr);
@@ -140,9 +157,80 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		   else {
      	   n.arrangeMyList2(r,orderList,heightyard);
 		   }
-       	  // n.printMyList(nr);
+		   long endTime = System.nanoTime();
+		   long duration = (endTime - startTime); 
        	   totalstep = orderList.size();
-       	   //System.out.println(totalstep);
+       	   OutputWriter ow = new OutputWriter();
+       	   
+       	    //building content
+       	   contentwriter = contentwriter + "\n";
+       	   contentwriter = contentwriter + "//OUTPUT\n";
+       	   contentwriter = contentwriter + (int)totalstep + "//Total Cost of moving\n";
+       	   contentwriter = contentwriter + "0//Cost of moving to Temporary Yard\n";
+       	   DecimalFormat df = new DecimalFormat("0.00000000000");
+           contentwriter = contentwriter + df.format((float)duration/(1000000000)) +"//Time consumed by solving\n";
+           contentwriter = contentwriter + "//Containers Position in Main Yard\n";
+           String linercolumns ="\t";
+          // System.out.println(columnyard);
+           for(int i = 1 ; i <= columnyard ; i++)
+           {
+        	   linercolumns = linercolumns + "c" + String.valueOf(i) + "\t";
+        	  
+           }
+           
+           contentwriter =  contentwriter + linercolumns;
+           contentwriter = contentwriter + "\n";
+           int nr2[][] = new int[columnyard][heightyard];
+           for(int i = endstack.size() - 1; i >= 0 ; i --)
+           {
+            int  j = 0;
+           	while(j < heightyard )
+              {
+           		if(endstack.get(i).size() > 0)
+           		{
+           			
+           	    nr2[i][j] = ((ContainerBox) endstack.get(i).poll()).getN();
+           		}
+           		else 
+           		{
+           			nr2[i][j] =  0;
+           		}
+           	     j++;
+              }
+           }
+           String arrayfield="";
+           for(int i =  nr2[0].length-1 ; i >= 0 ; i --)
+           {
+        	   arrayfield = arrayfield + "r" + (nr2[0].length-i);
+        	   arrayfield = arrayfield + "\t";
+        	   for (int j = 0  ; j <= nr2.length- 1  ;j++)
+        	   {
+        		  
+        		  arrayfield = arrayfield + nr2[j][i];
+        		  arrayfield = arrayfield + "\t";
+        	   }
+        	   arrayfield = arrayfield+"\n";
+           }
+         //  n.printMyList(nr2);;
+         //  System.out.println(endstack.size());
+         // System.out.println(((ContainerBox) endstack.get(0).poll()).getN());
+           contentwriter = contentwriter + arrayfield;
+           contentwriter = contentwriter + "//Containers Temporary Yard\n";
+           contentwriter = contentwriter + "\n";
+           contentwriter = contentwriter + "//Schedule of Moving\n";
+       	   try {
+       		   fileName  = fileName.split(".txt")[0];
+			 ow.CreateWriter(parentPath+"/"+fileName+"_HASolved.txt");
+			for(int i = 0; i < orderList.size() ; i++)
+			{
+				contentwriter = contentwriter + "Time " + i + ": "+ orderList.get(i).getN() + "-> "  + (int)orderList.get(i).getColpos() + "\n";
+			}
+			ow.WriteWriter(contentwriter);
+			ow.CloseWriter();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
        	  btnStart.setEnabled(true);
 		}
 	   else  if(e.getActionCommand() == "Sort 2") {
@@ -193,8 +281,8 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 			  row  = inputdata.length;
 			  col = inputdata[inputdata.length-1].length;
 			  r = new ContainerBox[row][col];
-			
 			  heightyard  = r2.getheighyard(filePath);
+			  
 		   } 
 		   }
 		   catch (IOException e1) {
@@ -353,6 +441,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
                File f2 = chooser.getSelectedFile();
                filePath  = f2.getPath();
                fileName  = f2.getName();
+               parentPath  = f2.getParent();
            } else {
               
            }

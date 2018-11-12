@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
+import Boundary.FormContainerArrangement;
 import Entity.AvailableSlot;
 import Entity.ContainerBox;
 import Entity.InputReader;
@@ -19,7 +20,7 @@ public class ArrangingAlgorithm {
 		  ContainerBox[][] r;
 		  int  inputdata[][] ;
 		  int row = 0,col = 0,heightyard =0;
-		 String  fileName = "C:\\Users\\HP\\Downloads\\Môn học\\Phân tích  và thiết kế giải thuật\\Instance_10-50_2.txt";
+		 String  fileName = "C:\\Users\\HP\\Downloads\\Môn học\\Phân tích  và thiết kế giải thuật\\Instance_10-50_3.txt";
 		  try {
 			  String[][] inputdata2;
 			  InputReader r2  = new InputReader();
@@ -44,6 +45,7 @@ public class ArrangingAlgorithm {
 			   		}
 				  }
 				  heightyard  = r2.getheighyard(fileName);
+				 
 				  ArrangingAlgorithm  n1 = new ArrangingAlgorithm();
 		     	   n1.arrangeMyList2(r,orderList,heightyard);
 			   } 
@@ -184,19 +186,20 @@ public class ArrangingAlgorithm {
         	  }
               endstack.get(currentstackend).add((ContainerBox)tempList.get(tempList.size()-1));//push((ContainerBox)tempList.get(tempList.size()-1));
               orderList.add(new SortingObject(heightyard-endstack.get(currentstackend).size()+1,currentstackend+1,max));
-              System.out.println(max);
+             // System.out.println(max);
           }
           tempList.remove(tempList.size()-1);
-          
-        //+ " - "  + countstack + " - "  + tempList.size() +"  -  " + pos );
           }
           else {
         	  countstack--;
           }
         }
+        FormContainerArrangement.columnyard = endstack.size();
+        FormContainerArrangement.endstack = endstack;
+       /*  */
+        /*
         for(int i = 0 ; i < endstack.size() ; i ++)
         {
-     
         	while(endstack.get(i).size() > 0)
            {
         	   System.out.print(((ContainerBox) endstack.get(i).poll()).getN());
@@ -208,7 +211,7 @@ public class ArrangingAlgorithm {
         for(int j  = 0; j < orderList.size();j ++)
       	{
         	System.out.println(orderList.get(j).getRowpos() + " - "  + orderList.get(j).getColpos() + " - "  + orderList.get(j).getN());
-      	}
+      	} */
      //  System.out.println(tempList.get(0).getN());
       //  System.out.println(max);
        // System.out.print(liststack.size());
@@ -362,6 +365,16 @@ public class ArrangingAlgorithm {
     public void printMyList(String[][] r) {
     	for (int i = 0; i < r.length; i++) {
     		String[] row = r[i];
+			for (int j = 0; j < row.length; j++) {
+				System.out.print(row[j] + " ");
+			}
+			System.out.println();
+		}
+    	
+    }
+    public void printMyList(int[][] r) {
+    	for (int i = 0; i < r.length; i++) {
+    		int[] row = r[i];
 			for (int j = 0; j < row.length; j++) {
 				System.out.print(row[j] + " ");
 			}
