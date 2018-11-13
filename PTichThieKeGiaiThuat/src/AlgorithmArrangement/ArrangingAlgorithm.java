@@ -33,14 +33,9 @@ public class ArrangingAlgorithm {
 				  row  = inputdata.length;
 				  col = inputdata[inputdata.length-1].length;
 				  r = new ContainerBox[row][col];
-				 // nr = new SortingObject[row][col];
 				  for (int i = 0; i < inputdata.length; i++) {
 				   		int[] row1 = inputdata[i];
 					for (int j = 0; j < row1.length; j++) {
-			   			//  if(row[j] == 0)
-			   			//  {
-			   			//	r[i][j] = new ContainerBox(xpos, ypos, edgelenght, edgelenght , i , j, row[j]);
-			   			//  }
 			   			  r[i][j] = new ContainerBox(0, 0, 20, 20 , i , j, row1[j]);
 			   		}
 				  }
@@ -74,7 +69,7 @@ public class ArrangingAlgorithm {
     
 
 
-    public void arrangeMyListSquare(ContainerBox[][] r,SortingObject[][] nr  )
+    public void arrangeMyListSquare(ContainerBox[][] r,SortingObject[][] nr , List<SortingObject> orderList)
     {
     	int currentrowpos = 0;
     	int row  = r.length;	
@@ -90,6 +85,7 @@ public class ArrangingAlgorithm {
   				for(int k = 0 ; k < tempList.size();k++)
   				{
   					nr[k][currentrowpos].setN(tempList.get(k).getN());
+  					orderList.add(new SortingObject(i,j,tempList.get(k).getN()));
   				}
   				   currentrowpos +=1; 
       			   tempList.removeAll(tempList);

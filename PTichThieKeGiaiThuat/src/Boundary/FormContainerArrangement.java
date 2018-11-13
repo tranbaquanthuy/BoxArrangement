@@ -63,22 +63,22 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    private float count = 0;
    private boolean status = false;
    private SailBoat boat ;
-   private List<SortingObject> 	orderList =  new ArrayList<SortingObject>();
+   private List<SortingObject> 	orderList;
    private ContainerBox[][] r;
    private SortingObject[][] nr;
    private DrawCanvas canvas;
    private float totalstep=0;
    JButton btnStart,btnLoad,btnSort,btnSort2;
    public FormContainerArrangement() {
-	// int rawinputdata[][] =  {{0,6,1,45,30},{22,23,15,19,17},{25,29,67,43,33},{12,11,5,7,4}};
+	 int rawinputdata[][] =  {{0,6,1,45,30},{22,23,15,19,17},{25,29,67,43,33},{12,11,5,7,4}};
 	 // int rawinputdata[][] =  {{0,6,1,45},{23,13,19,17},{12,5,7,4},{10,2,14,36}};
 	// int  rawinputdata[][] = {{6,7,1,15},{32,9,4,23},{30,12,11,19}};
-	   int  rawinputdata[][] = {{6,7,1,15,2},{40,32,9,4,23},{8,30,12,11,19}};
+	//   int  rawinputdata[][] = {{6,7,1,15,2},{40,32,9,4,23},{8,30,12,11,19}};
       inputdata = rawinputdata;
-	  row  = inputdata.length;
+     row  = inputdata.length;
 	  col = inputdata[inputdata.length-1].length;
 	  r = new ContainerBox[row][col];
-	 nr = new SortingObject[row][col];
+	 nr = new SortingObject[row][col]; 
       JPanel bottomPanel = new JPanel(new FlowLayout());
       btnStart = new JButton("Start");
       btnStart.addActionListener(this);
@@ -142,6 +142,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	   if(e.getActionCommand() == "Sort") {
             InputReader n2 = new InputReader();
             InputReader r2 = new InputReader();
+            orderList =  new ArrayList<SortingObject>();
             try {
 				contentwriter = r2.getAllContent(filePath);
 			} catch (IOException e2) {
@@ -152,7 +153,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		   long startTime = System.nanoTime();	 
 		   if(r.length == r[r.length-1].length)
 		   {
-			   n.arrangeMyListSquare(r, nr);
+			   n.arrangeMyListSquare(r, nr,orderList);
 		   }
 		   else {
      	   n.arrangeMyList2(r,orderList,heightyard);
@@ -228,13 +229,13 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 			ow.WriteWriter(contentwriter);
 			ow.CloseWriter();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
        	  btnStart.setEnabled(true);
 		}
 	   else  if(e.getActionCommand() == "Sort 2") {
-
+		   InputReader r2 = new InputReader();
+		   orderList =  new ArrayList<SortingObject>();    
 		    nr = new SortingObject[row][col];
 		    for (int i = 0; i < inputdata.length; i++) {
 		   		int[] row = inputdata[i];
@@ -242,16 +243,17 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		   		 nr[i][j] = new SortingObject(i,j,0);
 		   		}
 		   		}
+		  
 		   ArrangingAlgorithm  n = new ArrangingAlgorithm();
 		   if(r.length == r[r.length-1].length)
 		   {
-			   n.arrangeMyListSquare(r, nr);
+			   n.arrangeMyListSquare(r, nr,orderList);
 		   }
 		   else {
      	   n.arrangeMyList(r,nr,orderList);
-		   }
-       	   totalstep = orderList.size();
-       	  btnStart.setEnabled(true);
+		   };
+		   totalstep = orderList.size();
+		   btnStart.setEnabled(true);
 		}
 	   else if (e.getActionCommand() == "Load")
 	   {
@@ -273,16 +275,20 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		  String[][] inputdata2;
 		  InputReader r2  = new InputReader();
 		  if(filePath != null) { 
+			
 			   inputdata2 = new String[r2.getHeight(filePath)][r2.getColumns(filePath)];
 			   inputdata2 = r2.input(filePath, inputdata2);
+
 			  ArrangingAlgorithm  n = new ArrangingAlgorithm();
+			 // n.printMyList(inputdata2);
 			  n.exchangeint(inputdata2);
 			  inputdata = n.convertint(inputdata2);
 			  row  = inputdata.length;
 			  col = inputdata[inputdata.length-1].length;
 			  r = new ContainerBox[row][col];
 			  heightyard  = r2.getheighyard(filePath);
-			  
+			  startxpos = 50; 
+			  startypos = 240;
 		   } 
 		   }
 		   catch (IOException e1) {
@@ -296,8 +302,11 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		   task = new Task(); 
     	   c= r[r.length-1].length-1;
     	  task.start();
+    	  
         Timer timer = new Timer(0, new ActionListener() {
-		 @Override
+		 private int rr  = 0;
+
+		@Override
        public void actionPerformed(ActionEvent e) {
 		if(r.length == r[r.length-1].length) {
 		   for (int a = 0 ; a < r.length ; a++) {  
@@ -346,25 +355,27 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 			}
 	      }
 		 }
-		 else {			 
+		 else {	
+			    
 				  for (int a = 0 ; a < r.length ; a++) {  
 					for(int b =  0; b < r[r.length-1].length ; b++) {
-						 if(orderList.isEmpty() == false) {
-							 if(orderList.get(g).getN() == 0 ){
+						if(orderList.isEmpty() == false) {
+						if(orderList.get(g).getN() == 0 ){
 							    orderList.remove(g);
 							  }
-						
+						else {
 						 if(orderList.get(g).getN() != 0 ){
-							   if(r[a][b].getN() == orderList.get(g).getN()){
+							   if(r[a][b].getN() == orderList.get(g).getN()){			   
 								   if(orderList.get(g).isMoved())
 								   {
+									    rr = orderList.get(g).getN();
 									     if (l < edgelenght + (edgelenght * (orderList.get(g).getRowpos()+1)) ) {
 								        	 l = l + 1;
 								        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y -1); 	        	 
 								             canvas.repaint();}
-										 else if (m < edgelenght*7 + edgelenght * (r[r.length-1].length-1 - b) + edgelenght * orderList.get(g).getColpos() ) { //r[r.length-1].length-1
+										 else if (m < edgelenght*4 + edgelenght * (r[r.length-1].length-1 - b) + edgelenght * orderList.get(g).getColpos() ) { //r[r.length-1].length-1
 									        	 m = m + 1;
-									        	 r[a][b].setLocation(r[a][b].x - 1 , r[a][b].y ); 
+									        	 r[a][b].setLocation(r[a][b].x + 1 , r[a][b].y ); 
 									             canvas.repaint();}
 										  else if (k < edgelenght  + edgelenght * (orderList.get(g).getRowpos()) && m >= edgelenght*3 ){
 									        	 k = k + 1;
@@ -385,13 +396,41 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 										      break;
 										  }
 								  }
+								   else if(rr == orderList.get(g).getN()) {
+									     if (l < edgelenght + (edgelenght * (orderList.get(g).getRowpos()+1)) ) {
+								        	 l = l + 1;
+								        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y -1); 	        	 
+								             canvas.repaint();}
+										 else if (m <  edgelenght * (r[r.length-1].length-1 - b) + edgelenght * orderList.get(g).getColpos() ) { //r[r.length-1].length-1
+									        	 m = m + 1;
+									        	 r[a][b].setLocation(r[a][b].x - 1 , r[a][b].y ); 
+									             canvas.repaint();}
+										  else if (k < edgelenght  + edgelenght * (orderList.get(g).getRowpos()+1) && m >= edgelenght*3 ){
+									        	 k = k + 1;
+									        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y +1 ); 
+									             canvas.repaint();}
+										  else {
+											  count++;
+											  l = 0;
+								        	  m = 0;
+								        	  k = 0;
+								        	  r[a][b].setRowpos((int)orderList.get(g).getRowpos());
+								        	  r[a][b].setColpos((int)orderList.get(g).getColpos());
+										      orderList.remove(g);
+										      if(orderList.size() == 0) {
+										    		 outputTextArea.setVisible(true);
+									        		 ((Timer)e.getSource()).stop();
+										      }
+										      break;
+										  }
+								   }
 								else  {
 									
 								  if (l < edgelenght + (edgelenght * a) ) {
 						        	 l = l + 1;
 						        	 r[a][b].setLocation(r[a][b].x  , r[a][b].y -1); 
 						             canvas.repaint();}
-								 else if (m < edgelenght*6 + edgelenght * (r[r.length-1].length-1 - b) + edgelenght * orderList.get(g).getColpos() ) { //r[r.length-1].length-1
+								 else if (m < edgelenght*8 + edgelenght * (r[r.length-1].length-1 - b) + edgelenght * orderList.get(g).getColpos() ) { //r[r.length-1].length-1
 							        	 m = m + 1;
 							        	 r[a][b].setLocation(r[a][b].x +1 , r[a][b].y ); 
 							             canvas.repaint();}
@@ -413,6 +452,10 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 							   }
 							   }
 						 }
+						 else {
+							 orderList.remove(g);
+						 }
+						}
 					}
 						 else {
 							 outputTextArea.setVisible(true);
@@ -465,21 +508,31 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	      public void run(){ 	
 	 	  while(status == false){
 	    		float temp  = l + m + k;
-	    	//	float percentresultpart  =    temp/(float)(  edgelenght *( orderList.get(g).getRowpos() +a ) + edgelenght 
-	    		//		* ( r.length - 1 -orderList.get(g).getColpos())  + edgelenght * (c+3)  + edgelenght * (r.length-1))*100;
+	    		float percentresultpart = 0;
+	    		if(orderList.isEmpty() == false) {
+	    		 percentresultpart  =    temp/(float)(  edgelenght *( orderList.get(g).getRowpos() + a ) + edgelenght 
+	    	    			* ( r.length - 1 + (orderList.get(g).getColpos() + b) + d )  + edgelenght * (c+3.5)  + edgelenght * (r.length-1))*100;
+	    		}
+	    		else {
+	    			 percentresultpart = 100;
+	    		}
 	    		float percentresult  = (float)count/totalstep *100;
+	    		final int progresspart = (int) percentresultpart;
 	    		final int progress = (int) percentresult;
-	    	//	final int progresspart = (int) percentresultpart;
 	            SwingUtilities.invokeLater(new Runnable() {
 	               public void run() {
 	            	   progressBar.setValue(progress);
-	            	   if(progress >= 100)
+	            	  if(outputTextArea.isVisible())
+	            	  {
+	            		  progressBar.setValue(100);
+	            	  }
+	            	  if(progress >= 100)
 	   	    		   {
-	   	    	//		progressBarpart.setValue(progress);
+	   	    			progressBarpart.setValue(progress);
 	   	    			status = true;		
 	   	    		   }
 	            	   else {	   
-	               //   progressBarpart.setValue(progresspart);
+	                  progressBarpart.setValue(progresspart);
 	            	   }
 	               }
 	            });
@@ -500,22 +553,22 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
          setBackground(CANVAS_BACKGROUND);
        
       if(sort == true) {
-        if (r[0][0] == null)
-         {
-    	  createRec(inputdata);
-         }
+    	  if (r[0][0] == null)
+          {
+     	  createRec(inputdata);
+          }
         g.setColor(BOX_COLOR);
-       // g.drawLine(550, 290, 850, 290);
-        
         boat = new SailBoat(25,startypos*inputdata.length/4 + 240, inputdata.length*edgelenght + 400, 400);
-        g.drawRect(25 + inputdata.length*60+ 400 + 400, startypos*inputdata.length/4 + 240,inputdata.length * edgelenght, 50);
         boat.draw(g);
-           for (int i = 0; i < inputdata.length; i++) {
+        g.drawRect( inputdata.length*60 + 450, startypos*inputdata.length/4 + 240, (inputdata.length + 7) * edgelenght, 50);
+       
+        for (int i = 0; i < inputdata.length; i++) {
     		int[] row = inputdata[i];
 			for (int j = 0; j < row.length; j++) { 
 				if(r[i][j].getN() != 0)
 				{
-		         g.drawRect(r[i][j].x, r[i][j].y, edgelenght, edgelenght); 
+				//	
+		         g.drawRect(r[i][j].x, r[i][j].y , edgelenght, edgelenght); 
 		         drawCenteredString(g,String.valueOf(row[j]),r[i][j],g.getFont());
 		         xpos = xpos + edgelenght;
 				}
@@ -537,15 +590,12 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		}
       public  void createRec(int inputdata[][]) {
       int k=0;
-      for (int i = 0; i < inputdata.length; i++) {
+      int xpos = startxpos, ypos =  startypos;
+      for (int i = 0; i < inputdata.length; i++) 
+      {
    		int[] row = inputdata[i];
    		for (int j = 0; j < row.length; j++) {
-   			//  if(row[j] == 0)
-   			//  {
-   			//	r[i][j] = new ContainerBox(xpos, ypos, edgelenght, edgelenght , i , j, row[j]);
-   			//  }
    			  r[i][j] = new ContainerBox(xpos, ypos, edgelenght, edgelenght , i , j, row[j]);
-   			//  nr[i][j] = new SortingObject(i,j,0);
    			  xpos = xpos + edgelenght;
    			  k = k+1;
    		}
