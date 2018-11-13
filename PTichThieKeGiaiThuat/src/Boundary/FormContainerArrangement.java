@@ -526,7 +526,6 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	      }
 		public void run(){ 	
 	 	  while(status == false){
-	 		  System.out.println("hello");
 	    		float temp  = l + m + k;
 	    		float percentresultpart = 0;
 	    		if(orderList.isEmpty() == false) {
@@ -550,7 +549,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	   	    		   {
 	   	    			progressBarpart.setValue(progress);
 	   	    			status = true;		
-	   	    			interrupt();
+	   	    			//interrupt();
 	   	    		   }
 	            	   else {	   
 	                    progressBarpart.setValue(progresspart);
@@ -565,7 +564,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	    		
 	      }
 	      }
-		interrupt();
+		//interrupt();
 	   }   
    
    class DrawCanvas extends JPanel {
