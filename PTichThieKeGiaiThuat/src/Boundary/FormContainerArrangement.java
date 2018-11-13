@@ -68,7 +68,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    private SortingObject[][] nr;
    private DrawCanvas canvas;
    private float totalstep=0;
-   JButton btnStart,btnLoad,btnSort,btnSort2;
+   JButton btnStart,btnLoad,btnSort,btnSort2,btnReset;
    public FormContainerArrangement() {
 	 int rawinputdata[][] =  {{0,6,1,45,30},{22,23,15,19,17},{25,29,67,43,33},{12,11,5,7,4}};
 	 // int rawinputdata[][] =  {{0,6,1,45},{23,13,19,17},{12,5,7,4},{10,2,14,36}};
@@ -91,6 +91,8 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
       btnSort2.setEnabled(false);
       btnLoad = new JButton("Load");
       btnLoad.addActionListener(this);
+      btnReset = new JButton("Reset");
+      btnReset.addActionListener(this);
 	  progressBar = new JProgressBar(0, 100);
 	  progressBar.setValue(0);
 	  progressBar.setStringPainted(true);
@@ -101,7 +103,9 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	  outputTextArea.setVisible(false);
 	   JButton btnbrowse= new JButton("Browse");
 	      btnbrowse.addActionListener(this);
+	      bottomPanel.add(btnReset);
 	      bottomPanel.add(btnbrowse);
+	      
 	  bottomPanel.add(btnLoad);
 	  bottomPanel.add(btnSort);
 	  bottomPanel.add(btnSort2);
@@ -139,7 +143,17 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    }
    @Override
    public void actionPerformed(ActionEvent e) {
-	   if(e.getActionCommand() == "Sort") {
+	   if(e.getActionCommand() == "Reset") {
+		   sort = false;
+		   orderList =  new ArrayList<SortingObject>();
+		   outputTextArea.setVisible(false);
+		   progressBar.setValue(0);
+		   progressBarpart.setValue(0);
+		   status = true;
+		   canvas.repaint();
+		   
+	   }
+   else if(e.getActionCommand() == "Sort") {
             InputReader n2 = new InputReader();
             InputReader r2 = new InputReader();
             orderList =  new ArrayList<SortingObject>();
@@ -231,7 +245,9 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+       	   if(columnyard < 7) {
        	  btnStart.setEnabled(true);
+       	   }
 		}
 	   else  if(e.getActionCommand() == "Sort 2") {
 		   InputReader r2 = new InputReader();
@@ -253,7 +269,9 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
      	   n.arrangeMyList(r,nr,orderList);
 		   };
 		   totalstep = orderList.size();
-		   btnStart.setEnabled(true);
+		   if(columnyard < 7) {
+		       	  btnStart.setEnabled(true);
+		       	   }
 		}
 	   else if (e.getActionCommand() == "Load")
 	   {
@@ -503,10 +521,12 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
        }
    }
    private class Task extends Thread {    
+	 
 	      public Task(){
 	      }
-	      public void run(){ 	
+		public void run(){ 	
 	 	  while(status == false){
+	 		  System.out.println("hello");
 	    		float temp  = l + m + k;
 	    		float percentresultpart = 0;
 	    		if(orderList.isEmpty() == false) {
@@ -530,18 +550,22 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
 	   	    		   {
 	   	    			progressBarpart.setValue(progress);
 	   	    			status = true;		
+	   	    			interrupt();
 	   	    		   }
 	            	   else {	   
-	                  progressBarpart.setValue(progresspart);
+	                    progressBarpart.setValue(progresspart);
 	            	   }
 	               }
 	            });
 	            try {
 	               Thread.sleep(100);
-	            } catch (InterruptedException e) {} 
+	            } catch (InterruptedException e) {
+	            	System.out.println("hello");
+	            } 
 	    		
 	      }
 	      }
+		interrupt();
 	   }   
    
    class DrawCanvas extends JPanel {
