@@ -40,7 +40,6 @@ public class ArrangingAlgorithm {
 			   		}
 				  }
 				  heightyard  = r2.getheighyard(fileName);
-				 
 				  ArrangingAlgorithm  n1 = new ArrangingAlgorithm();
 		     	   n1.arrangeMyList2(r,orderList,heightyard);
 			   } 
@@ -192,8 +191,8 @@ public class ArrangingAlgorithm {
         }
         FormContainerArrangement.columnyard = endstack.size();
         FormContainerArrangement.endstack = endstack;
-       /*  */
-        /*
+       
+      /*  
         for(int i = 0 ; i < endstack.size() ; i ++)
         {
         	while(endstack.get(i).size() > 0)
@@ -207,10 +206,8 @@ public class ArrangingAlgorithm {
         for(int j  = 0; j < orderList.size();j ++)
       	{
         	System.out.println(orderList.get(j).getRowpos() + " - "  + orderList.get(j).getColpos() + " - "  + orderList.get(j).getN());
-      	} */
-     //  System.out.println(tempList.get(0).getN());
-      //  System.out.println(max);
-       // System.out.print(liststack.size());
+      	}  */
+     
       	/* for(int j= 0 ;j< tempList.size();j++)
         {
       	  System.out.print(tempList.get(j).getN() + "\t");

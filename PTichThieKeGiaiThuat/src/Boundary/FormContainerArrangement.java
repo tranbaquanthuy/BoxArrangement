@@ -44,6 +44,7 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
    
    public static int columnyard = 0;
    public static List<Queue> endstack = new ArrayList<Queue>();
+   
    //Read and Write output 
    private String filePath;
    private String fileName;
@@ -220,7 +221,6 @@ public class FormContainerArrangement extends JFrame  implements ActionListener 
         	   arrayfield = arrayfield + "\t";
         	   for (int j = 0  ; j <= nr2.length- 1  ;j++)
         	   {
-        		  
         		  arrayfield = arrayfield + nr2[j][i];
         		  arrayfield = arrayfield + "\t";
         	   }
