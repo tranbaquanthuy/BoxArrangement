@@ -1,0 +1,13 @@
+//ship
+4//height
+15//columns
+30//containers
+//yard
+3//height
+//containers
+	c1 c2 c3 c4 c5 c6
+r1	x  15 x  38 x  99 
+r2  11 x  20 x  48 67 
+r3  x  78 x  x  x  23 
+r4	19 x  x  12 x  88 
+

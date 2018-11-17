@@ -1,0 +1,5 @@
+1. Chiều cao bãi và chiều cao tàu khác nhau thì không chạy đúng vị trí bãi như mong muốn
+
+2. nếu có cột còn trống hết thì vẫn sort được nhưng không biểu diễn được
+
+3. nút reset chưa hoàn thiện
