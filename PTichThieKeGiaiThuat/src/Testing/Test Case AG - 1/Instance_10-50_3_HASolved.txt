@@ -1,0 +1,45 @@
+//ship
+5//height
+6//columns
+17//containers
+//yard
+4//height
+//containers
+	c1	c2	c3	c4	c5	c6
+r1	x	x	x	x	x	1
+r2	x	x	x	x	x	5
+r3	99	55	x	33	x	7
+r4	42	18	x	16	17  11	
+r5	28	4	21	31	13	15
+
+
+//OUTPUT
+17//Total Cost of moving
+0//Cost of moving to Temporary Yard
+0.00054796698//Time consumed by solving
+//Containers Position in Main Yard
+	c1	c2	c3	c4	c5	c6	c7	c8	
+r1	33	17	0	1	0	0	0	0	
+r2	42	18	0	4	0	0	0	0	
+r3	55	21	0	13	0	0	0	0	
+r4	99	28	16	31	5	7	11	15	
+//Containers Temporary Yard
+
+//Schedule of Moving
+Time 0: 99-> 1
+Time 1: 55-> 1
+Time 2: 42-> 1
+Time 3: 33-> 1
+Time 4: 28-> 2
+Time 5: 21-> 2
+Time 6: 18-> 2
+Time 7: 17-> 2
+Time 8: 16-> 3
+Time 9: 31-> 4
+Time 10: 13-> 4
+Time 11: 4-> 4
+Time 12: 1-> 4
+Time 13: 5-> 5
+Time 14: 7-> 6
+Time 15: 11-> 7
+Time 16: 15-> 8
